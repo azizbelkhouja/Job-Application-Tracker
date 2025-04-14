@@ -1,4 +1,4 @@
-export default function Navbar() {
+export default function Navbar({onOpen}) {
 
 return (
     <>
@@ -10,7 +10,7 @@ return (
                 <input type="text" placeholder="Search" className="input input-bordered w-48 md:w-auto" />
             </div>
             <div className="navbar-end">
-                <a className="btn btn-primary">Aggiungi una candidatura</a>
+                <a className="btn btn-primary" onClick={onOpen}>Aggiungi una candidatura</a>
             </div>
         </div>
     </>

@@ -6,11 +6,12 @@ import { useState } from 'react';
 
 function App() {
 
-  const [IsOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [modalMode, setmodalMode] = useState('add');
 
   const handleOpen = (mode) => {
     setIsOpen(true);
+    setmodalMode(mode);
   }
 
   const handleSubmit = () => {
@@ -23,8 +24,8 @@ function App() {
   return (
     <>
       <Navbar onOpen = {() => handleOpen('add')}/>
-      <TableList />
-      <ModalForm isOpen={(isOpen)} onSubmit={(handleSubmit)} onClose={() => setIsOpen(false)} />
+      <TableList handleOpen={handleOpen}/>
+      <ModalForm isOpen={isOpen} onSubmit={handleSubmit} mode={modalMode} onClose={() => setIsOpen(false)} />
     </>
   )
 }

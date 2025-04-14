@@ -1,10 +1,10 @@
-export default function TableList() {
+export default function TableList({handleOpen}) {
 
     const jobs = [ 
-        {id: "1", comapny: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Candidatura inviata", jobLink: "https://link.com"},
-        {id: "2", comapny: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Offerta ricevuta", jobLink: "https://link.com"},
-        {id: "3", comapny: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Colloquio programmato", jobLink: "https://link.com"},
-        {id: "4", comapny: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Rifiutato", jobLink: "https://link.com"},
+        {id: "1", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Candidatura inviata", jobLink: "https://link.com"},
+        {id: "2", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Offerta ricevuta", jobLink: "https://link.com"},
+        {id: "3", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Colloquio programmato", jobLink: "https://link.com"},
+        {id: "4", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Rifiutato", jobLink: "https://link.com"},
 
     ]
 
@@ -56,7 +56,7 @@ export default function TableList() {
 
                                 <td><a href={job.jobLink} className="btn btn-outline">Link</a></td>
                                 <td>
-                                <button className="btn btn-sm">
+                                <button onClick={() => handleOpen('edit')} className="update btn btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -66,7 +66,7 @@ export default function TableList() {
 
                                 </td>
                                 <td>
-                                <button className="btn btn-sm">
+                                <button className="delete btn btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
