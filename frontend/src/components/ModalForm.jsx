@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ModalForm({isOpen, onClose, mode, onSubmit}) {
+export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
 
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
@@ -13,10 +13,18 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit}) {
         setStatus(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit({ company, position, location, date, status, link });
-        onClose(); // Close the modal after submission
+        try {
+            const jobData = {company, position, location, date, status, link};
+            await onSubmit(jobData);
+            onClose();
+        }
+        catch (error) {
+            console.error('Error submitting form:', error);
+        }
+        
+        onClose();
     }
 
     return (
@@ -57,7 +65,7 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit}) {
                     </div>
                     <label className="flex items-center gap-2 input my-4 w-full">
                         <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></g></svg>
-                        <input type="url" placeholder="- Link Offerta -"  value={link} onChange={(e) => setLink(e.target.value)}/>
+                        <input type="text" placeholder="- Link Offerta -"  value={link} onChange={(e) => setLink(e.target.value)}/>
                     </label>
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose}>✕</button>
                     <button className="btn btn-success w-full" onClick={onSubmit}>{mode === 'edit' ? 'Save Changes' : 'Create'}</button>
