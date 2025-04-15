@@ -1,6 +1,8 @@
+import axios from 'axios';
+
 export default function TableList({handleOpen}) {
 
-    const jobs = [ 
+    const jobs = [
         {id: "1", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Candidatura inviata", jobLink: "https://link.com"},
         {id: "2", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Offerta ricevuta", jobLink: "https://link.com"},
         {id: "3", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Colloquio programmato", jobLink: "https://link.com"},
@@ -14,17 +16,17 @@ export default function TableList({handleOpen}) {
                 <table className="table">
                     {/* head */}
                     <thead>
-                    <tr>
-                        <th></th>
-                        <th>Azienda</th>
-                        <th>Posizione</th>
-                        <th>Luogo</th>
-                        <th>Data di candidatura</th>
-                        <th>Stato</th>
-                        <th>Link offerta</th>
-                        <th>Aggiorna</th>
-                        <th>Elimina</th>
-                    </tr>
+                        <tr>
+                            <th></th>
+                            <th>Azienda</th>
+                            <th>Posizione</th>
+                            <th>Luogo</th>
+                            <th>Data di candidatura</th>
+                            <th>Stato</th>
+                            <th>Link offerta</th>
+                            <th>Aggiorna</th>
+                            <th>Elimina</th>
+                        </tr>
                     </thead>
                     <tbody  className="hover:bg-base-300">
                     {/* row 1 */}
