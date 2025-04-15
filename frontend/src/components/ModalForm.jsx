@@ -15,16 +15,16 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit}) {
                         </label>
                     </div>
 
-                    <label className="flex items-center gap-2 input my-4 w-full">
-                        Data di candidatura
-                        <input type="date" className="input border-0"/>
+                        Data di candidatura:
+                    <label className="flex items-center gap-2 input mb-4 w-full">
+                        <input type="date"/>
                     </label>
 
                     <div className="flex mb-4 justify-between">
                         <label className="flex items-center gap-2 input my-4">
                             <input type="text" className="grow" placeholder="Luogo" />
                         </label>
-                        <label className="flex items-center gap-2 input my-4 border-0 active:border-0">
+                        <label className="flex items-center gap-2 m-2">
                             <select defaultValue="Candidatura inviata" className="select">
                                 <option disabled={true}>Stato</option>
                                 <option>Candidatura inviata</option>
