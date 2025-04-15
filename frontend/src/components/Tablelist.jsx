@@ -1,17 +1,38 @@
 import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
-export default function TableList({handleOpen}) {
+export default function TableList({handleOpen, searchTerm}) {
 
-    const jobs = [
-        {id: "1", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Candidatura inviata", jobLink: "https://link.com"},
-        {id: "2", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Offerta ricevuta", jobLink: "https://link.com"},
-        {id: "3", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Colloquio programmato", jobLink: "https://link.com"},
-        {id: "4", company: "Cineca", position: "Backend Developer", location: "Cento", applicationDate: "13/04/2025", status: "Rifiutato", jobLink: "https://link.com"},
+    const [tableData, setTableData] = useState([]);
+    const [error, setError] = useState(null);
 
-    ]
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/jobs');
+                setTableData(response.data);
+            } catch (error) {
+                setError(error);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const filteredData = tableData.filter( job => 
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.application_date?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.status.toLowerCase().includes(searchTerm.toLowerCase()) ||  
+        job.job_link.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
 
     return (
         <>
+
+            {error && <div className="alert alert-error shadow-lg mt-10"></div>}
+
             <div className="overflow-x-aut mt-10">
                 <table className="table">
                     {/* head */}
@@ -30,14 +51,13 @@ export default function TableList({handleOpen}) {
                     </thead>
                     <tbody  className="hover:bg-base-300">
                     {/* row 1 */}
-                    {jobs.map(function(job){
-                        return (
-                            <tr key={job.comapny}>
+                    {filteredData.map((job)=>(
+                            <tr key={job.id}>
                                 <th>{job.id}</th>
-                                <td>{job.comapny}</td>
+                                <td>{job.company}</td>
                                 <td>{job.position}</td>
                                 <td>{job.location}</td>
-                                <td>{job.applicationDate}</td>
+                                <td>{new Date(job.application_date).toLocaleDateString()}</td>
                                 <td>
                                     <button
                                         className={`btn btn-sm rounded-full text-black ${
@@ -56,7 +76,7 @@ export default function TableList({handleOpen}) {
                                     </button>
                                 </td>
 
-                                <td><a href={job.jobLink} className="btn btn-outline">Link</a></td>
+                                <td><a href={job.job_link} className="btn btn-outline">Link</a></td>
                                 <td>
                                 <button onClick={() => handleOpen('edit')} className="update btn btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
@@ -78,9 +98,8 @@ export default function TableList({handleOpen}) {
 
                                 </td>
                             </tr>
-                        )
-                    })
-
+                        
+                        ))
                     }
                     
                     </tbody>
