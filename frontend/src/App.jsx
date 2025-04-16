@@ -2,7 +2,7 @@ import './App.css'
 import ModalForm from './components/ModalForm'
 import Navbar from './components/Navbar'
 import TableList from './components/Tablelist'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
@@ -12,10 +12,24 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [jobData, setJobData] = useState(null);
   const [tableData, setTableData] = useState([]);
+  const [error, setError] = useState(null);
 
-  const handleOpen = (mode) => {
+  const fetchData = async () => {
+      try {
+          const response = await axios.get('http://localhost:3000/api/jobs');
+          setTableData(response.data);
+      } catch (error) {
+          setError(error);
+      }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleOpen = (mode, job) => {
     setIsOpen(true);
     setmodalMode(mode);
+    setJobData(job);
   }
 
   const handleSubmit = async (newjobData) => {
@@ -23,19 +37,19 @@ function App() {
       try {
         const response = await axios.post('http://localhost:3000/api/jobs', newjobData);
         console.log('Job created successfully:', response.data);
-  
-        // Re-fetch the jobs to get the latest data
-        const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/api/jobs');
-          setTableData(response.data); // Update table data with the latest from the backend
-
-          // Update tableData with the newly created job
-          setTableData((prevData) => [...prevData, response.data]);
-        };
-        await fetchData();  // Fetch updated list after adding the new job
+        setTableData([...tableData, response.data]);
       } catch (error) {
         console.error('Error creating job:', error);
       }
+    } else {
+      try {
+        const response = await axios.put(`http://localhost:3000/api/jobs/${jobData._id}`, newjobData);
+        console.log('Job updated successfully:', response.data);
+        setTableData(tableData.map(job => job._id === jobData._id ? response.data : job));
+      } catch (error) {
+        console.error('Error updating job:', error);
+      }
+
     }
   };
   

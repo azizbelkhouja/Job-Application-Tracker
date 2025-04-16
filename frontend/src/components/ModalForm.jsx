@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
 
     const [company, setCompany] = useState('');
     const [position, setPosition] = useState('');
     const [location, setLocation] = useState('');
-    const [date, setDate] = useState('');
+    const [application_date, setDate] = useState('');
     const [status, setStatus] = useState('');
-    const [link, setLink] = useState('');
+    const [job_link, setLink] = useState('');
 
     const handleStatusChange = (e) => {
         setStatus(e.target.value);
@@ -16,7 +16,7 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const jobData = {company, position, location, date, status, link};
+            const jobData = {company, position, location, application_date, status, job_link};
             await onSubmit(jobData);
             onClose();
         }
@@ -26,6 +26,24 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
         
         onClose();
     }
+
+    useEffect(() => {
+        if (mode === 'edit' && jobData) {
+            setCompany(jobData.company);
+            setPosition(jobData.position);
+            setLocation(jobData.location);
+            setDate(jobData.application_date);
+            setStatus(jobData.status);
+            setLink(jobData.job_link);
+        } else {
+            setCompany('');
+            setPosition('');
+            setLocation('');
+            setDate('');
+            setStatus('');
+            setLink('');
+        }
+    }, [mode, jobData]);
 
     return (
         <>
@@ -45,7 +63,7 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
 
                         Data di candidatura:
                     <label className="flex items-center gap-2 input mb-4 w-full">
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
+                        <input type="text" value={application_date} onChange={(e) => setDate(e.target.value)}/>
                     </label>
 
                     <div className="flex mb-4 justify-between">
@@ -65,7 +83,7 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
                     </div>
                     <label className="flex items-center gap-2 input my-4 w-full">
                         <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></g></svg>
-                        <input type="text" placeholder="- Link Offerta -"  value={link} onChange={(e) => setLink(e.target.value)}/>
+                        <input type="text" placeholder="- Link Offerta -"  value={job_link} onChange={(e) => setLink(e.target.value)}/>
                     </label>
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose}>✕</button>
                     <button className="btn btn-success w-full" onClick={onSubmit}>{mode === 'edit' ? 'Save Changes' : 'Create'}</button>

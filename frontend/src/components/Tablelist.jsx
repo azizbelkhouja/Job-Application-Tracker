@@ -1,31 +1,31 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-export default function TableList({handleOpen, searchTerm}) {
+export default function TableList({handleOpen, searchTerm, setTableData, tableData}) {
 
-    const [tableData, setTableData] = useState([]);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/api/jobs');
-                setTableData(response.data);
-            } catch (error) {
-                setError(error);
-            }
-        }
-        fetchData();
-    }, []);
 
     const filteredData = tableData.filter( job => 
         job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.application_date?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.application_date.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.status.toLowerCase().includes(searchTerm.toLowerCase()) ||  
         job.job_link.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Sei sicuro di voler eliminare questa candidatura?");
+        if (confirmDelete) {
+            try {
+                await axios.delete(`http://localhost:3000/api/jobs/${id}`);
+                setTableData(tableData.filter(job => job.id !== id));
+            } catch (error) {
+                console.error('Error deleting job:', error);
+            }
+
+        }
+    }
 
 
     return (
@@ -78,17 +78,16 @@ export default function TableList({handleOpen, searchTerm}) {
 
                                 <td><a href={job.job_link} className="btn btn-outline">Link</a></td>
                                 <td>
-                                <button onClick={() => handleOpen('edit')} className="update btn btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                            d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3zM3 21h18" />
-                                    </svg>
-                                </button>
-
+                                    <button onClick={() => handleOpen('edit', job)} className="update btn btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3zM3 21h18" />
+                                        </svg>
+                                    </button>
                                 </td>
                                 <td>
-                                <button className="delete btn btn-sm">
+                                <button onClick={() => handleDelete(job.id)} className="delete btn btn-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

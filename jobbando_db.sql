@@ -3,7 +3,7 @@ CREATE TABLE job_applications (
     company VARCHAR(100) NOT NULL,
     position VARCHAR(100) NOT NULL,
     location VARCHAR(100),
-    application_date DATE NOT NULL,
+    application_date VARCHAR(100) NOT NULL,
     status VARCHAR(50) CHECK (
         status IN (
             'Candidatura inviata',
