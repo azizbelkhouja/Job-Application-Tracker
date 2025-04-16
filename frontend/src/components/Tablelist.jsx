@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 export default function TableList({handleOpen, searchTerm, setTableData, tableData}) {
 
+    // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState(null);
 
     const filteredData = tableData.filter( job => 
@@ -57,7 +58,7 @@ export default function TableList({handleOpen, searchTerm, setTableData, tableDa
                                 <td>{job.company}</td>
                                 <td>{job.position}</td>
                                 <td>{job.location}</td>
-                                <td>{new Date(job.application_date).toLocaleDateString()}</td>
+                                <td>{job.application_date}</td>
                                 <td>
                                     <button
                                         className={`btn btn-sm rounded-full text-black ${

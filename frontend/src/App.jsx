@@ -12,44 +12,46 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [jobData, setJobData] = useState(null);
   const [tableData, setTableData] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
-      try {
-          const response = await axios.get('http://localhost:3000/api/jobs');
-          setTableData(response.data);
-      } catch (error) {
-          setError(error);
-      }
+    try {
+        const response = await axios.get('http://localhost:3000/api/jobs');
+        setTableData(response.data);
+    } catch (error) {
+        setError(error);
+    }
   };
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleOpen = (mode, job) => {
-    setIsOpen(true);
-    setmodalMode(mode);
     setJobData(job);
+    setmodalMode(mode);
+    setIsOpen(true);
   }
 
   const handleSubmit = async (newjobData) => {
     if (modalMode === 'add') {
       try {
         const response = await axios.post('http://localhost:3000/api/jobs', newjobData);
-        console.log('Job created successfully:', response.data);
-        setTableData([...tableData, response.data]);
+        setTableData((prevData) => [...prevData, response.data]);
+
       } catch (error) {
         console.error('Error creating job:', error);
       }
     } else {
       try {
-        const response = await axios.put(`http://localhost:3000/api/jobs/${jobData._id}`, newjobData);
+        const response = await axios.put(`http://localhost:3000/api/jobs/${jobData.id}`, newjobData);
         console.log('Job updated successfully:', response.data);
-        setTableData(tableData.map(job => job._id === jobData._id ? response.data : job));
+        setTableData((prevData) =>
+          prevData.map((job) => (job.id === response.data.id ? response.data : job))
+        );
       } catch (error) {
         console.error('Error updating job:', error);
       }
-
     }
   };
   

@@ -23,8 +23,6 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
         catch (error) {
             console.error('Error submitting form:', error);
         }
-        
-        onClose();
     }
 
     useEffect(() => {
@@ -86,7 +84,7 @@ export default function ModalForm({isOpen, onClose, mode, onSubmit, jobData}) {
                         <input type="text" placeholder="- Link Offerta -"  value={job_link} onChange={(e) => setLink(e.target.value)}/>
                     </label>
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose}>✕</button>
-                    <button className="btn btn-success w-full" onClick={onSubmit}>{mode === 'edit' ? 'Save Changes' : 'Create'}</button>
+                    <button className="btn btn-success w-full" type="submit">{mode === 'edit' ? 'Save Changes' : 'Create'}</button>
                 </form>
             </div>
             </dialog>

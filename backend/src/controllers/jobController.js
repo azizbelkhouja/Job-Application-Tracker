@@ -23,7 +23,7 @@ export const createJobApplication = async (req, res) => {
 
 export const updateJobApplication = async (req, res) => {
     try {
-        const JobId = req.params.id;
+        const JobId = parseInt(req.params.id, 10);
         const jobData = req.body;
         const updatedJob = await jobService.updateJobApplication(jobData, JobId);
         if (!updatedJob) {
