@@ -17,7 +17,7 @@ function App() {
 
   const fetchData = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/jobs');
+        const response = await axios.get('https://jobbando-be.onrender.com/api/jobs');
         setTableData(response.data);
     } catch (error) {
         setError(error);
@@ -36,7 +36,7 @@ function App() {
   const handleSubmit = async (newjobData) => {
     if (modalMode === 'add') {
       try {
-        const response = await axios.post('http://localhost:3000/api/jobs', newjobData);
+        const response = await axios.post('https://jobbando-be.onrender.com/api/jobs', newjobData);
         setTableData((prevData) => [...prevData, response.data]);
 
       } catch (error) {
@@ -44,7 +44,7 @@ function App() {
       }
     } else {
       try {
-        const response = await axios.put(`http://localhost:3000/api/jobs/${jobData.id}`, newjobData);
+        const response = await axios.put(`https://jobbando-be.onrender.com/api/jobs/${jobData.id}`, newjobData);
         console.log('Job updated successfully:', response.data);
         setTableData((prevData) =>
           prevData.map((job) => (job.id === response.data.id ? response.data : job))

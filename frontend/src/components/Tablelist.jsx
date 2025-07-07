@@ -19,7 +19,7 @@ export default function TableList({handleOpen, searchTerm, setTableData, tableDa
         const confirmDelete = window.confirm("Sei sicuro di voler eliminare questa candidatura?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:3000/api/jobs/${id}`);
+                await axios.delete(`https://jobbando-be.onrender.com/api/jobs/${id}`);
                 setTableData(tableData.filter(job => job.id !== id));
             } catch (error) {
                 console.error('Error deleting job:', error);
